@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shear Code Valentine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #ff4d6d, #ff8fab, #ffb3ba);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      width: 350px;
+      max-width: 90%;
+      text-align: center;
+      display: none;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.6s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    h2 {
+      color: #ff4d6d;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 1.5em;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff4d6d;
+      box-shadow: 0 0 8px rgba(255, 77, 109, 0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #ff4d6d, #e63956);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #e63956, #d62839);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .donate {
+      background: linear-gradient(135deg, #4caf50, #388e3c);
+    }
+
+    .donate:hover {
+      background: linear-gradient(135deg, #388e3c, #2e7d32);
+    }
+
+    .icon {
+      font-size: 2em;
+      color: #ff4d6d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .qr-code {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .donate-info {
+      text-align: left;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .donate-info p {
+      margin: 5px 0;
+      font-weight: 400;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 20px;
+        width: 90%;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
+      .qr-code {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CARD 1 -->
+  <div class="card active" id="card1">
+    <i class="fas fa-heart icon"></i>
+    <h2>Bạn là ai?</h2>
+    <input type="text" id="name" placeholder="Nhập tên hoặc nickname">
+    <button onclick="nextToRate()">Tiếp tục</button>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="card" id="card2">
+    <i class="fas fa-star icon"></i>
+    <h2>Đánh giá sản phẩm</h2>
+    <textarea id="rate" placeholder="Cảm nhận của bạn..."></textarea>
+    <button onclick="sendData()">Gửi đánh giá</button>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="card" id="card3">
+    <i class="fas fa-gift icon"></i>
+    <h2>Ủng hộ shop ❤️</h2>
+    <p>Nếu bạn thích sản phẩm, hãy donate để ủng hộ shop nha!</p>
+    <button class="donate" onclick="nextToDonate()">Donate</button>
+    <button onclick="nextToThanks()">Bỏ qua</button>
+  </div>
+
+  <!-- CARD 4: Donate -->
+<div class="card donate-card" id="card4">
+  <div class="card-header">
+    <i class="fas fa-hand-holding-heart icon"></i>
+    <h2>Ủng hộ mình nhé!</h2>
+  </div>
+
+  <img 
+    src="https://sf-static.upanhlaylink.com/img/image_202602043934ab68bbe730ecb89133557ac8adcb.jpg" 
+    alt="Mã QR Donate" 
+    class="qr-code"
+  >
+
+  <div class="bank-info">
+    <div class="info-row">
+      <span class="label">Ngân hàng:</span>
+      <span>BIDV</span>
+    </div>
+    <div class="info-row">
+      <span class="label">Chủ TK:</span>
+      <span>DUONG THI THUY HANG</span>
+    </div>
+    <div class="info-row highlight">
+      <span class="label">STK:</span>
+      <span>8870110660</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn copy-btn" onclick="copyDonateInfo()">
+      <i class="fas fa-copy"></i> Copy TK
+    </button>
+    <button class="btn done-btn" onclick="nextToThanks()">
+      <i class="fas fa-check"></i> Đã chuyển
+    </button>
+  </div>
+
+  <div id="copyTooltip" class="copy-tooltip">Đã sao chép!</div>
+</div>
+
+<style>
+.donate-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-header i {
+  font-size: 2.2rem;
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+.card-header h2 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.qr-code {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  margin: 1rem auto;
+  display: block;
+}
+
+.bank-info {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+}
+
+.highlight span:last-child {
+  font-weight: bold;
+  color: #e67e22;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copy-btn {
+  background: #3498db;
+  color: white;
+}
+
+.copy-btn:hover {
+  background: #2980b9;
+}
+
+.done-btn {
+  background: #27ae60;
+  color: white;
+}
+
+.done-btn:hover {
+  background: #219653;
+}
+
+.copy-tooltip {
+  visibility: hidden;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.copy-tooltip.show {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
+<script>
+// Giữ nguyên hàm copy của bạn, chỉ đổi text thông báo cho thân thiện hơn
+function copyDonateInfo() {
+  const text = `BIDV | DUONG THI THUY HANG | 8870110660`;
+  navigator.clipboard.writeText(text).then(() => {
+    const tooltip = document.getElementById("copyTooltip");
+    tooltip.classList.add("show");
+    setTimeout(() => tooltip.classList.remove("show"), 1800);
+  }).catch(() => {
+    alert("Copy không thành công, bạn copy tay nhé!");
+  });
+}
+</script>
+
+  <!-- CARD 5: Thanks -->
+  <div class="card" id="card5">
+    <i class="fas fa-check-circle icon"></i>
+    <h2>Cảm ơn bạn!</h2>
+    <p>
+      Cảm ơn bạn đã quan tâm tới sản phẩm.<br>
+      Bạn có thể tải về ngay lúc này.<br><br>
+      <b>Lưu ý: hãy cre : sangdev nha</b>
+    </p>
+    <button onclick="downloadFile()">Tải về</button>
+  </div>
+
+<script>
+  const BOT_TOKEN = "7571735453:AAG8gkZ5pFyt4mCc88RTQOKAq3MqDAURfSQ";
+  const CHAT_ID = "7389597494";
+
+  function showCard(id) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function nextToRate() {
+    const name = document.getElementById('name').value.trim();
+    if (!name) return alert("Vui lòng nhập tên!");
+    showCard('card2');
+  }
+
+  
+  function sendData() {
+  const name = document.getElementById('name').value.trim();
+  const rate = document.getElementById('rate').value.trim();
+
+  if (!name) return alert("Vui lòng nhập tên nhé! ❤️");
+  if (!rate) return alert("Bạn quên viết đánh giá rồi nè... 😢");
+
+  // ────────────────────────────────────────────────
+  // Phần gửi thông tin bot – đã làm đẹp & rõ ràng hơn
+  // ────────────────────────────────────────────────
+  const message = 
+`✨ Shear Code Valentine – Đánh giá mới ✨
+
+🧑‍💻 Người dùng: ${name || "Ẩn danh"}
+📝 Đánh giá:
+${rate}
+
+──────────────────────────────
+🤖 Thông tin bot Telegram:
+• Tên bot: @ShearCodeValentineBot (hoặc tên bạn đặt)
+• Token: 7571735453:AAG8gkZ5pFyt4mCc88RTQOKAq3MqDAURfSQ
+• Chat ID nhận tin: ${CHAT_ID}
+• Loại chat: ${CHAT_ID.startsWith('-') ? 'Group/Channel' : 'User cá nhân'}
+──────────────────────────────
+
+Cảm ơn bạn đã dành thời gian đánh giá sản phẩm! 
+Chúc bạn một ngày thật ngọt ngào ♡`;
+
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: "Markdown"   // giúp emoji và định dạng đẹp hơn
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("Gửi không thành công");
+    showCard('card3');
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Có lỗi khi gửi đánh giá, bạn thử lại nhé!");
+  });
+}
+
+  function nextToDonate() {
+    showCard('card4');
+  }
+
+  function nextToThanks() {
+    showCard('card5');
+  }
+
+  function downloadFile() {
+    window.location.href = "https://drive.google.com/drive/folders/13rZp_gGfj59FdxQYCQEUJokmq6vddj9c?usp=drive_link"; // link file tải
+  }
+</script>
+
+</body>
+</html>
